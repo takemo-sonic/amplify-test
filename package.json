@@ -1,0 +1,44 @@
+{
+  "name": "amplify-next",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:check": "biome lint ./",
+    "format:check": "biome format ./",
+    "lint:fix": "biome format --write ./ && biome lint ./",
+    "fix": "biome check --write --unsafe ./ && biome lint ./"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@aws-amplify/backend": "^1.8.0",
+    "@aws-amplify/backend-cli": "^1.4.2",
+    "@biomejs/biome": "1.9.4",
+    "@types/aws-lambda": "^8.10.146",
+    "@types/node": "^22.9.3",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "aws-cdk": "^2",
+    "aws-cdk-lib": "^2",
+    "constructs": "^10.0.0",
+    "esbuild": "^0.24.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@aws-amplify/ui-react": "^6.7.0",
+    "aws-amplify": "^6.9.0",
+    "next": "^15.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "volta": {
+    "node": "22.8.0"
+  }
+}
