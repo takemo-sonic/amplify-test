@@ -6,6 +6,7 @@ import { Amplify } from 'aws-amplify';
 import outputs from '~/amplify_outputs.json';
 const inter = Inter({ subsets: ['latin'] });
 
+// サーバーサイドでは { ssr: true } を指定しなくても良い
 Amplify.configure(outputs);
 
 export const metadata: Metadata = {
