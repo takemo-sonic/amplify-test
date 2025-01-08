@@ -4,6 +4,9 @@ import { Amplify } from 'aws-amplify';
 import outputs from '~/amplify_outputs.json';
 
 /**
+ * configureメソッドはAmplifyライブラリがバックエンドリソースと正しく連携するために必要な準備を行うメソッドです。
+ * クライアントとサーバーサイドのそれぞれでAmplifyのバックエンドリソースを使う前に必ず呼び出してください。
+ *
  * @see https://docs.amplify.aws/react/build-a-backend/server-side-rendering/
  */
 Amplify.configure(outputs, {
