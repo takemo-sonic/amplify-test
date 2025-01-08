@@ -27,12 +27,12 @@ const schema = a.schema({
       name: a.string(),
     })
     .returns(a.ref('SayHelloResponse'))
-    .authorization((allow) => [allow.guest()])
+    .authorization((allow) => [allow.guest(), allow.authenticated()])
     .handler(a.handler.function(sayHello)),
   count: a
     .query()
     .returns(a.ref('CountResponse'))
-    .authorization((allow) => [allow.guest()])
+    .authorization((allow) => [allow.guest(), allow.authenticated()])
     .handler(a.handler.function(count)),
 });
 

@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './app.css';
-
+import { BaseLayout, ConfigureAmplifyClientSide } from '@/components';
+import { Amplify } from 'aws-amplify';
+import outputs from '~/amplify_outputs.json';
 const inter = Inter({ subsets: ['latin'] });
+
+Amplify.configure(outputs);
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +20,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ConfigureAmplifyClientSide />
+        <BaseLayout>{children}</BaseLayout>
+      </body>
     </html>
   );
 }
