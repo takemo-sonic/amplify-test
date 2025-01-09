@@ -1,5 +1,6 @@
 import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { count } from '../functions/count/resource';
+import { message } from '../functions/message/resource';
 import { sayHello } from '../functions/say-hello/resource';
 
 /*== STEP 1 ===============================================================
@@ -21,6 +22,13 @@ const schema = a.schema({
   CountResponse: a.customType({
     count: a.integer(),
   }),
+  MessageResponse: a.customType({
+    id: a.string().required(),
+    message: a.string().required(),
+  }),
+  MessagesResponse: a.customType({
+    messages: a.ref('MessageResponse').required().array(),
+  }),
   sayHello: a
     .query()
     .arguments({
@@ -34,7 +42,32 @@ const schema = a.schema({
     .returns(a.ref('CountResponse'))
     .authorization((allow) => [allow.guest(), allow.authenticated()])
     .handler(a.handler.function(count)),
+  getMessages: a
+    .query()
+    .returns(a.ref('MessagesResponse'))
+    .authorization((allow) => [allow.guest(), allow.authenticated()])
+    .handler(a.handler.function(message)),
+  createMessage: a
+    .mutation()
+    .arguments({
+      message: a.string().required(),
+    })
+    .returns(a.ref('MessageResponse'))
+    .authorization((allow) => [allow.guest(), allow.authenticated()])
+    .handler(a.handler.function(message)),
+  updateMessage: a
+    .mutation()
+    .arguments({
+      id: a.string().required(),
+      message: a.string().required(),
+    })
+    .returns(a.ref('MessageResponse'))
+    .authorization((allow) => [allow.guest(), allow.authenticated()])
+    .handler(a.handler.function(message)),
 });
+
+// 指定したリソース（Lmabda関数）からGrahpQLへのアクセス権限を設定
+// schema.authorization((allow) => [allow.resource(rest)]);
 
 export type Schema = ClientSchema<typeof schema>;
 
