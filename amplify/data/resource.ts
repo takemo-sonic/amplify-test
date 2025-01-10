@@ -2,6 +2,7 @@ import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 import { count } from '../functions/count/resource';
 import { message } from '../functions/message/resource';
 import { sayHello } from '../functions/say-hello/resource';
+import { schema as generatedSqlSchema } from './schema.sql';
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -9,6 +10,22 @@ adding a new "isDone" field as a boolean. The authorization rule below
 specifies that any unauthenticated user can "create", "read", "update",
 and "delete" any "Todo" records.
 =========================================================================*/
+
+// Add a global authorization rule
+const sqlSchema = generatedSqlSchema
+  .renameModels(() => [['todos', 'Task']])
+  .setAuthorization((models) => [
+    models.Task.authorization((allow) => [
+      allow.guest(),
+      allow.authenticated(),
+    ]),
+  ]);
+
+// generatedSqlSchema.authorization((allow) => [
+//   allow.guest(),
+//   allow.authenticated(),
+// ]);
+
 const schema = a.schema({
   Todo: a
     .model({
@@ -69,10 +86,16 @@ const schema = a.schema({
 // 指定したリソース（Lmabda関数）からGrahpQLへのアクセス権限を設定
 // schema.authorization((allow) => [allow.resource(rest)]);
 
-export type Schema = ClientSchema<typeof schema>;
+// Use the a.combine() operator to stitch together the models backed by DynamoDB
+// and the models backed by Postgres or MySQL databases.
+const combinedSchema = a.combine([schema, sqlSchema]);
+
+// Don't forget to update your client types to take into account the types from
+// both schemas.
+export type Schema = ClientSchema<typeof combinedSchema>;
 
 export const data = defineData({
-  schema,
+  schema: combinedSchema,
   authorizationModes: {
     defaultAuthorizationMode: 'userPool',
   },
